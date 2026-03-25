@@ -1,0 +1,40 @@
+{
+  "_generated_by": "legacy-to-agentic-ready",
+  "_generated_at": "2026-03-25T17:01:11.199886+00:00",
+  "_version": "1.0.0",
+  "project_name": "bowling-kata",
+  "description": "================= > Uncle Bob's [classic kata](http://butunclebob.com/ArticleS.UncleBob.TheBowlingGameKata)",
+  "primary_languages": [
+    "Java"
+  ],
+  "frameworks": [],
+  "build_system": "maven",
+  "entry_points": [],
+  "test_framework": "unknown",
+  "test_directory": "",
+  "source_directories": [
+    "src"
+  ],
+  "key_files": {
+    "README.md": "Project documentation and overview",
+    "pom.xml": "Maven project configuration"
+  },
+  "conventions": {
+    "naming": "PascalCase",
+    "structure": "single-package"
+  },
+  "commands": {
+    "install": "mvn install",
+    "build": "mvn package",
+    "test": "mvn test",
+    "lint": "mvn checkstyle:check",
+    "run": "mvn exec:java"
+  },
+  "environment": {
+    "required_env_vars": []
+  },
+  "ci_cd": {
+    "platform": "",
+    "config_file": ""
+  }
+}
