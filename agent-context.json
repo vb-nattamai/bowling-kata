@@ -1,0 +1,43 @@
+{
+  "static": {
+    "_comment": "These fields are set once. Edit manually. Never overwritten by the transformer.",
+    "repo_name": "bowling-kata",
+    "primary_language": "Python",
+    "language_version": "go",
+    "frameworks": [],
+    "entry_point": "cmd/scorer/main.go",
+    "api_protocol": "REST",
+    "restricted_write_paths": [],
+    "environment_variables": {
+      "DATABASE_URL": "<description>",
+      "DATABASE_POOL_SIZE": "<description>",
+      "REDIS_URL": "<description>",
+      "CACHE_TTL_SECONDS": "<description>",
+      "ANTHROPIC_API_KEY": "<description>",
+      "METRICS_API_KEY": "<description>",
+      "JAVA_API_PORT": "<description>",
+      "PYTHON_API_PORT": "<description>",
+      "SCORING_SERVICE_PORT": "<description>",
+      "ENABLE_LLM_ANALYSIS": "<description>",
+      "ENABLE_METRICS": "<description>",
+      "LOG_LEVEL": "<description>"
+    }
+  },
+  "dynamic": {
+    "_comment": "These fields are refreshed automatically on every scan.",
+    "last_scanned": "2026-03-25T20:03:17.906972+00:00",
+    "module_layout": {
+      "src/": "Source code",
+      "tests/": "Test code"
+    },
+    "domain_concepts": [],
+    "agent_capabilities": [
+      "code_analysis",
+      "testing",
+      "building"
+    ],
+    "test_command": "go test ./...",
+    "build_command": "go build ./...",
+    "lint_command": ""
+  }
+}
