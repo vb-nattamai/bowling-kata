@@ -1,0 +1,137 @@
+openapi: "3.0.3"
+info:
+  title: Bowling Kata API
+  description: |
+    REST API for calculating bowling scores.
+    Implements the classic Bowling Kata scoring rules:
+    - Strike: 10 pins on first roll → 10 + next two rolls as bonus
+    - Spare: 10 pins across two rolls → 10 + next roll as bonus
+    - 10th frame allows up to 3 rolls
+  version: "1.0.0"
+  contact:
+    name: AgentReady
+    url: https://github.com/vb-nattamai/agent-ready
+
+servers:
+  - url: http://localhost:8080
+    description: Java/Spring local
+  - url: http://localhost:8000
+    description: Python/FastAPI local
+  - url: http://localhost:3000
+    description: TypeScript/Express local
+
+paths:
+  /health:
+    get:
+      summary: Health check
+      responses:
+        "200":
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+
+  /score:
+    post:
+      summary: Calculate bowling score
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GameRequest"
+            examples:
+              perfect_game:
+                summary: Perfect game
+                value:
+                  playerName: "Alice"
+                  rolls: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
+              gutter_game:
+                summary: Gutter game
+                value:
+                  playerName: "Bob"
+                  rolls: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      responses:
+        "200":
+          description: Score calculated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GameResponse"
+        "400":
+          description: Invalid rolls provided
+
+  /games:
+    get:
+      summary: List recent games
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+      responses:
+        "200":
+          description: List of recent games
+
+components:
+  schemas:
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: ok
+        service:
+          type: string
+
+    GameRequest:
+      type: object
+      required: [playerName, rolls]
+      properties:
+        playerName:
+          type: string
+          example: Alice
+        rolls:
+          type: array
+          items:
+            type: integer
+            minimum: 0
+            maximum: 10
+          minItems: 1
+          maxItems: 21
+
+    GameResponse:
+      type: object
+      properties:
+        playerName:
+          type: string
+        rolls:
+          type: array
+          items:
+            type: integer
+        score:
+          type: integer
+          example: 300
+        isPerfectGame:
+          type: boolean
+        frames:
+          type: array
+          items:
+            $ref: "#/components/schemas/Frame"
+
+    Frame:
+      type: object
+      properties:
+        index:
+          type: integer
+        type:
+          type: string
+          enum: [strike, spare, open]
+        rolls:
+          type: array
+          items:
+            type: integer
+        frameScore:
+          type: integer
