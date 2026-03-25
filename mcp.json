@@ -1,0 +1,32 @@
+{
+  "$schema": "https://raw.githubusercontent.com/modelcontextprotocol/servers/main/schemas/mcp.schema.json",
+  "_generated_by": "legacy-to-agentic-ready",
+  "_generated_at": "2026-03-25T20:13:57.399476+00:00",
+
+  "mcpServers": {
+    "bowling-kata-tools": {
+      "command": "{{TOOL_COMMAND}}",
+      "args": {{TOOL_ARGS}},
+      "cwd": "{{PROJECT_ROOT}}",
+      "env": {
+        "{{ENV_VAR_1}}": "{{ENV_VALUE_1}}"
+      }
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "{{PROJECT_ROOT}}"
+      ]
+    },
+    "git": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-git",
+        "--repository",
+        "{{PROJECT_ROOT}}"
+      ]
+    }
+  }
+}
