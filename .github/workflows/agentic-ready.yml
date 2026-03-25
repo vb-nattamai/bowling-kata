@@ -1,0 +1,15 @@
+name: Agentic Ready
+on:
+  issues:
+    types: [opened, labeled]
+jobs:
+  transform:
+    if: |
+      contains(github.event.issue.title, '[agentic-ready]') ||
+      contains(github.event.issue.labels.*.name, 'agentic-ready')
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    uses: vb-nattamai/agent-ready/.github/workflows/reusable-transformer.yml@main
+    secrets: inherit
