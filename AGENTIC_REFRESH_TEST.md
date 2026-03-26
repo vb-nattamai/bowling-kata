@@ -1,3 +1,3 @@
-Agentic Ready test change
+# Agentic-refresh test
 
-This file was added to trigger the context-refresh workflow test.
+This file was added to test the context-refresh workflow.
