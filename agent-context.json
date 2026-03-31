@@ -24,20 +24,139 @@
     }
   },
   "dynamic": {
-    "_comment": "These fields are refreshed automatically on every scan.",
-    "last_scanned": "2026-03-25T20:52:56.882747+00:00",
-    "module_layout": {
-      "src/": "Source code",
-      "tests/": "Test code"
-    },
-    "domain_concepts": [],
-    "agent_capabilities": [
-      "code_analysis",
-      "testing",
-      "building"
+    "last_scanned": "2026-03-31T15:44:44.634134+00:00",
+    "secondary_languages": [
+      "Python",
+      "TypeScript",
+      "Go"
     ],
-    "test_command": "go test ./...",
-    "build_command": "go build ./...",
-    "lint_command": ""
+    "build_system": "maven",
+    "build_command": "mvn package",
+    "install_command": "mvn dependency:resolve && pip install -r api/requirements.txt && cd services/scoring-service && npm ci",
+    "run_command": "mvn spring-boot:run",
+    "test_framework": "JUnit 5, pytest, Jest, go test",
+    "test_directory": "src/test/java/bowling",
+    "source_directories": [
+      "src/main/java/bowling",
+      "api",
+      "pkg/bowling",
+      "cmd/scorer",
+      "services/scoring-service/src"
+    ],
+    "module_layout": {
+      "java-api": "src/main/java/bowling",
+      "java-tests": "src/test/java/bowling",
+      "python-api": "api",
+      "python-tests": "tests",
+      "go-bowling": "pkg/bowling",
+      "go-cli": "cmd/scorer",
+      "ts-scoring-service": "services/scoring-service/src",
+      "tools": "tools",
+      "monitoring": "monitoring"
+    },
+    "architecture_summary": "The project is a polyglot monorepo implementing the bowling scoring kata in four languages. The Java Spring Boot service is the primary API with a REST controller, domain model (PlayerScore), and an in-memory LeaderboardService. A Python FastAPI service, a TypeScript Express microservice, and a Go CLI scorer each independently implement the same bowling scoring algorithm. Docker Compose orchestrates all services along with Redis and Prometheus.",
+    "key_components": [
+      {
+        "name": "Bowling",
+        "path": "src/main/java/bowling/Bowling.java",
+        "responsibility": "Core Java implementation of the bowling game scoring logic with roll() and score() methods."
+      },
+      {
+        "name": "BowlingApplication",
+        "path": "src/main/java/bowling/BowlingApplication.java",
+        "responsibility": "Spring Boot application entry point that bootstraps the Java REST API."
+      },
+      {
+        "name": "GameController",
+        "path": "src/main/java/bowling/api/GameController.java",
+        "responsibility": "REST controller exposing /api/score and /api/leaderboard endpoints for bowling game scoring."
+      },
+      {
+        "name": "LeaderboardService",
+        "path": "src/main/java/bowling/service/LeaderboardService.java",
+        "responsibility": "In-memory thread-safe service that records and ranks player scores on a leaderboard."
+      },
+      {
+        "name": "PlayerScore",
+        "path": "src/main/java/bowling/domain/PlayerScore.java",
+        "responsibility": "Domain object representing a player's scored bowling game with natural ordering by highest score."
+      },
+      {
+        "name": "FastAPI main",
+        "path": "api/main.py",
+        "responsibility": "Python FastAPI service implementing bowling scoring with /health and /score endpoints."
+      },
+      {
+        "name": "scoring-service index",
+        "path": "services/scoring-service/src/index.ts",
+        "responsibility": "TypeScript Express microservice exposing bowling scoring via /health and /score HTTP endpoints."
+      },
+      {
+        "name": "Go bowling game",
+        "path": "pkg/bowling/game.go",
+        "responsibility": "Go implementation of the bowling scoring logic with Roll() and Score() methods."
+      },
+      {
+        "name": "Go CLI scorer",
+        "path": "cmd/scorer/main.go",
+        "responsibility": "Go CLI entry point that accepts roll arguments and prints the calculated bowling score."
+      },
+      {
+        "name": "ScoringRequest",
+        "path": "src/main/java/bowling/api/ScoringRequest.java",
+        "responsibility": "Request DTO for the POST /api/score endpoint, containing player name and list of rolls."
+      },
+      {
+        "name": "ScoringResponse",
+        "path": "src/main/java/bowling/api/ScoringResponse.java",
+        "responsibility": "Response DTO for the POST /api/score endpoint, containing player name, score, and rank."
+      }
+    ],
+    "agent_safe_operations": [
+      "Modify bowling scoring logic in src/main/java/bowling/Bowling.java",
+      "Modify bowling scoring logic in api/main.py",
+      "Modify bowling scoring logic in pkg/bowling/game.go",
+      "Modify bowling scoring logic in services/scoring-service/src/index.ts",
+      "Add or modify test cases in src/test/java/bowling/",
+      "Add or modify test cases in api/test_scoring.py",
+      "Add or modify test cases in pkg/bowling/game_test.go",
+      "Add or modify test cases in services/scoring-service/src/scoring.test.ts",
+      "Add new API endpoints in GameController.java",
+      "Add new endpoints in api/main.py",
+      "Modify domain objects in src/main/java/bowling/domain/",
+      "Modify service classes in src/main/java/bowling/service/",
+      "Update application.properties in src/main/resources/",
+      "Add new test fixtures in api/conftest.py",
+      "Update README.md documentation"
+    ],
+    "agent_forbidden_operations": [
+      "Modify or delete .github/workflows/ CI configuration files",
+      "Modify lock files or dependency version pinning in pom.xml, go.mod, package.json, or requirements.txt",
+      "Modify or delete .env.example or create .env files with real secrets",
+      "Modify docker-compose.yml or Dockerfiles",
+      "Modify agent-context.json, mcp.json, or AGENTS.md (auto-generated agentic context files)",
+      "Modify or delete openapi.yaml",
+      "Modify tool template scaffolds in the tools/ directory",
+      "Commit real API keys or secrets anywhere in the codebase",
+      "Delete or modify the LICENSE file",
+      "Modify memory/schema.md"
+    ],
+    "potential_pitfalls": [
+      "The project has four independent implementations of bowling scoring (Java, Python, Go, TypeScript) \u2014 changes to scoring logic must be synchronized across all four to maintain consistency.",
+      "The Java project requires JDK 21 (pom.xml) but CI uses JDK 17 \u2014 tests may pass in CI but fail locally if Java version mismatches exist.",
+      "Python tests import from 'api.main' which requires the api/ directory to be a package on the Python path; run pytest from the repo root with 'pytest api/' as shown in CI.",
+      "The tools/ directory contains template scaffolds with unresolved {{PLACEHOLDER}} variables \u2014 these files will not compile and should not be modified by agents.",
+      "The Go module path is 'github.com/vb-nattamai/bowling-kata' \u2014 all Go imports must use this full module path, not relative imports.",
+      "The LeaderboardService is in-memory and not persistent \u2014 all scores are lost on restart, which could be surprising when testing via Docker Compose.",
+      "The 10th frame in bowling allows up to 3 rolls which is a common source of off-by-one errors; the rolls array is sized to 21 to accommodate this.",
+      "The Python conftest.py fixtures use 'api.main' import which depends on running pytest from the repo root, not from within the api/ directory.",
+      "The TypeScript scoring service test file imports directly from './index' which also starts the Express server \u2014 this may cause port conflicts in test environments."
+    ],
+    "conventions": {
+      "naming": "camelCase",
+      "structure": "monorepo"
+    },
+    "has_ci": true,
+    "has_openapi": true
   }
 }
